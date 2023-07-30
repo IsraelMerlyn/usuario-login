@@ -2,12 +2,16 @@ package com.josuevqz.users.usuarioslogin.controllers;
 
 import com.josuevqz.users.usuarioslogin.models.User;
 import com.josuevqz.users.usuarioslogin.services.UserServices;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -35,12 +39,18 @@ public class UserControllers {
 //        return services.save(user);
 //    }
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody User user){
+    public ResponseEntity<?> create( @RequestBody @Valid User user, BindingResult result){
+       if(result.hasErrors()){
+           return validation(result);
+       }
        return  ResponseEntity.status(HttpStatus.CREATED).body(services.save(user));
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<?> update(@RequestBody User user,@PathVariable Long id){
+    public ResponseEntity<?> update( @RequestBody @Valid User user,BindingResult result,@PathVariable Long id){
+        if(result.hasErrors()){
+            return validation(result);
+        }
         Optional<User> o= services.update(user, id);
 
         if (o.isPresent()){
@@ -48,6 +58,7 @@ public class UserControllers {
         }
         return ResponseEntity.notFound().build();
     }
+
 
     @DeleteMapping("delete/{id}")
     public  ResponseEntity<?> remove(@PathVariable Long id){
@@ -58,4 +69,13 @@ public class UserControllers {
         }
        return ResponseEntity.noContent().build();
     }
+
+    private ResponseEntity<?> validation(BindingResult result) {
+        Map<String,String> errors = new HashMap<>();
+        result.getFieldErrors().forEach(err -> {
+            errors.put(err.getField(),"El campo " + err.getField() + " " + err.getDefaultMessage());
+        });
+        return ResponseEntity.badRequest().body(errors);
+    }
+
 }

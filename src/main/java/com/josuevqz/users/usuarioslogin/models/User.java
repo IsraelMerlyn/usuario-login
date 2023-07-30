@@ -13,7 +13,7 @@ public class User {
     @Size(min = 4, max = 10)
     @Column(unique = true)
     private  String username;
-    @NotEmpty
+    @NotBlank
     @Size(min = 8, max = 12)
     private  String password;
     @NotEmpty
