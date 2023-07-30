@@ -15,12 +15,12 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping()
 @CrossOrigin(originPatterns = "*")
 public class UserControllers {
     @Autowired
     private UserServices services;
-    @GetMapping("/list-users")
+    @GetMapping("/users")
     public List<User> list(){
         return  services.findAll();
     }
