@@ -24,6 +24,7 @@ public class UserControllers {
     public List<User> list(){
         return  services.findAll();
     }
+
     @GetMapping("/search/{id}")
     public ResponseEntity<?> show(@PathVariable  Long id){
       Optional<User> userOptional = services.findByID(id);
@@ -32,12 +33,7 @@ public class UserControllers {
       }
       return  ResponseEntity.notFound().build();
     }
-    //metodo alternativo para guardar registro de ususario
-//    @PostMapping("/create")
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public User create(@RequestBody User user){
-//        return services.save(user);
-//    }
+
     @PostMapping("/create")
     public ResponseEntity<?> create( @RequestBody @Valid User user, BindingResult result){
        if(result.hasErrors()){
