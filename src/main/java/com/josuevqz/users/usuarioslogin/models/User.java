@@ -1,6 +1,7 @@
 package com.josuevqz.users.usuarioslogin.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "users")
@@ -8,9 +9,15 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank
+    @Size(min = 4, max = 10)
     @Column(unique = true)
     private  String username;
+    @NotEmpty
+    @Size(min = 8, max = 12)
     private  String password;
+    @NotEmpty
+    @Email
     @Column(unique = true)
     private  String email;
 
