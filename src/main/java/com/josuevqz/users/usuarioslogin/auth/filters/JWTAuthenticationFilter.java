@@ -18,6 +18,8 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.josuevqz.users.usuarioslogin.auth.TokenJWTConfig.*;
+
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private  AuthenticationManager authenticationManager;
@@ -53,9 +55,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
 
         String username = ((org.springframework.security.core.userdetails.User)authResult.getPrincipal()).getUsername();
-        String  originalInput = "algun_token." + username;
+        String  originalInput = SECRET_KEY + ":" + username;
         String token = Base64.getEncoder().encodeToString(originalInput.getBytes()) ;
-        response.addHeader("Authorization", "Bearer" + token);
+
+        response.addHeader(HEADER_AUTHORIZATION, PREFIX_KEY + token);
+
             Map<String, Object> body = new HashMap<>();
             body.put("token", token);
             body.put("message", String.format("Hola %s, iniciado con exito!", username));
@@ -68,7 +72,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
         Map<String, Object> body = new HashMap<>();
-        body.put("message", "Error en autenticacion");
+        body.put("message", MESSAGE_ERROR_AUTENTICATION);
         body.put("error",failed.getMessage());
 
         response.getWriter().write(new ObjectMapper().writeValueAsString(body));

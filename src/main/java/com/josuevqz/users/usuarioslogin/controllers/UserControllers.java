@@ -25,7 +25,7 @@ public class UserControllers {
         return  services.findAll();
     }
 
-    @GetMapping("/search/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity<?> show(@PathVariable  Long id){
       Optional<User> userOptional = services.findByID(id);
       if(userOptional.isPresent()) {
@@ -34,7 +34,7 @@ public class UserControllers {
       return  ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/create")
+    @PostMapping("/users")
     public ResponseEntity<?> create( @RequestBody @Valid User user, BindingResult result){
        if(result.hasErrors()){
            return validation(result);
@@ -42,7 +42,7 @@ public class UserControllers {
        return  ResponseEntity.status(HttpStatus.CREATED).body(services.save(user));
     }
 
-    @PutMapping("/edit/{id}")
+    @PutMapping("/users/{id}")
     public ResponseEntity<?> update( @RequestBody @Valid User user,BindingResult result,@PathVariable Long id){
         if(result.hasErrors()){
             return validation(result);
@@ -56,7 +56,7 @@ public class UserControllers {
     }
 
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/users/{id}")
     public  ResponseEntity<?> remove(@PathVariable Long id){
         Optional<User> o=services.findByID(id);
         if (o.isPresent()){
