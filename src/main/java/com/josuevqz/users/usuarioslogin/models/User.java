@@ -14,7 +14,7 @@ public class User {
     @Column(unique = true)
     private  String username;
     @NotBlank
-    @Size(min = 8, max = 12)
+    @Size(min = 4, max = 5)
     private  String password;
     @NotEmpty
     @Email
