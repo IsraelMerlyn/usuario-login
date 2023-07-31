@@ -36,8 +36,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             username = user.getUsername();
             password = user.getPassword();
 
-            logger.info("Username desde request InputStream(raw) " + username);
-            logger.info("Password desde request InputStream(raw) " + password);
+//            logger.info("Username desde request InputStream(raw) " + username);  comentando despues de validar su funcionamiento
+//            logger.info("Password desde request InputStream(raw) " + password);
 
         } catch (StreamReadException | DatabindException e) {
             e.printStackTrace();

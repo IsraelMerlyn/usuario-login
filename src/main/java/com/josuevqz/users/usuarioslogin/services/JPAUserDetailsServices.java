@@ -22,7 +22,7 @@ public class JPAUserDetailsServices implements UserDetailsService {
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
         return new User(username,
-                "12345678",
+                "$2a$10$DOMDxjYyfZ/e7RcBfUpzqeaCs8pLgcizuiQWXPkU35nOhZlFcE9MS",
                 true,
                 true,
                 true,
