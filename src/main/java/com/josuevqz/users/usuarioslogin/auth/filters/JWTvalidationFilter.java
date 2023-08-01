@@ -38,6 +38,7 @@ public class JWTvalidationFilter extends BasicAuthenticationFilter {
       try {
           Claims claims= Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token).getBody();
           String username = claims.getSubject();
+
           List<GrantedAuthority> authorities = new ArrayList<>();
           authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
