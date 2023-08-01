@@ -34,7 +34,7 @@ public class UserControllers {
       return  ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/users")
+    @PostMapping()
     public ResponseEntity<?> create( @RequestBody @Valid User user, BindingResult result){
        if(result.hasErrors()){
            return validation(result);

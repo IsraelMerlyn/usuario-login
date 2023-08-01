@@ -3,6 +3,7 @@ package com.josuevqz.users.usuarioslogin.services;
 import com.josuevqz.users.usuarioslogin.models.User;
 import com.josuevqz.users.usuarioslogin.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +13,9 @@ import java.util.Optional;
 public class UserServiceImpl implements  UserServices{
     @Autowired
     private UserRepository repository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Override
     @Transactional(readOnly = true)
     public List<User> findAll() {
@@ -27,6 +31,7 @@ public class UserServiceImpl implements  UserServices{
     @Override
     @Transactional
     public User save(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return repository.save(user);
     }
 
