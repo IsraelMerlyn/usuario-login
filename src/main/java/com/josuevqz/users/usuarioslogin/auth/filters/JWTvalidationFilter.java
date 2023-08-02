@@ -1,6 +1,7 @@
 package com.josuevqz.users.usuarioslogin.auth.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.josuevqz.users.usuarioslogin.auth.SimpleGrantedAuthorityJsonCreator;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -37,10 +38,13 @@ public class JWTvalidationFilter extends BasicAuthenticationFilter {
 
       try {
           Claims claims= Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token).getBody();
+          Object authoritiesClaims = claims.get("authorities");
           String username = claims.getSubject();
 
-          List<GrantedAuthority> authorities = new ArrayList<>();
-          authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+          Collection<? extends  GrantedAuthority> authorities = Arrays
+                  .asList(new ObjectMapper()
+                  .addMixIn(SimpleGrantedAuthority.class, SimpleGrantedAuthorityJsonCreator.class)
+                  .readValue(authoritiesClaims.toString().getBytes(),SimpleGrantedAuthority[].class));
 
           UsernamePasswordAuthenticationToken authentication= new UsernamePasswordAuthenticationToken(username,null, authorities);
 
