@@ -1,6 +1,7 @@
 package com.josuevqz.users.usuarioslogin.controllers;
 
 import com.josuevqz.users.usuarioslogin.models.User;
+import com.josuevqz.users.usuarioslogin.models.dto.UserDTO;
 import com.josuevqz.users.usuarioslogin.services.UserServices;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +22,13 @@ public class UserControllers {
     @Autowired
     private UserServices services;
     @GetMapping("/users")
-    public List<User> list(){
+    public List<UserDTO> list(){
         return  services.findAll();
     }
 
     @GetMapping("/users/{id}")
     public ResponseEntity<?> show(@PathVariable  Long id){
-      Optional<User> userOptional = services.findByID(id);
+      Optional<UserDTO> userOptional = services.findByID(id);
       if(userOptional.isPresent()) {
           return ResponseEntity.ok(userOptional.orElseThrow());
       }
@@ -47,7 +48,7 @@ public class UserControllers {
         if(result.hasErrors()){
             return validation(result);
         }
-        Optional<User> o= services.update(user, id);
+        Optional<UserDTO> o= services.update(user, id);
 
         if (o.isPresent()){
             return ResponseEntity.status(HttpStatus.CREATED).body(o.orElseThrow());
@@ -58,7 +59,7 @@ public class UserControllers {
 
     @DeleteMapping("/users/{id}")
     public  ResponseEntity<?> remove(@PathVariable Long id){
-        Optional<User> o=services.findByID(id);
+        Optional<UserDTO> o=services.findByID(id);
         if (o.isPresent()){
             services.remove(id);
             return ResponseEntity.noContent().build(); // respuesta 204

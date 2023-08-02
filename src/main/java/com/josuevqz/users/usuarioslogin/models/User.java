@@ -1,7 +1,10 @@
 package com.josuevqz.users.usuarioslogin.models;
 
+import com.josuevqz.users.usuarioslogin.models.entity.Rol;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -21,6 +24,10 @@ public class User {
     @Column(unique = true)
     private  String email;
 
+    @ManyToMany
+    @JoinTable(name = "users_roles",joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"),
+    uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id","role_id"})})
+    private List<Rol> roles;
     public Long getId() {
         return id;
     }
@@ -51,5 +58,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Rol> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Rol> roles) {
+        this.roles = roles;
     }
 }

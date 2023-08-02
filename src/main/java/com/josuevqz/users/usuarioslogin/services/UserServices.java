@@ -1,15 +1,16 @@
 package com.josuevqz.users.usuarioslogin.services;
 
 import com.josuevqz.users.usuarioslogin.models.User;
+import com.josuevqz.users.usuarioslogin.models.dto.UserDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface UserServices{
-    List<User> findAll();
-    Optional<User> findByID(Long id);
-    User save(User user);
-    Optional<User> update(User user, Long id);
+    List<UserDTO> findAll();
+    Optional<UserDTO> findByID(Long id);
+    UserDTO save(User user);
+    Optional<UserDTO> update(User user, Long id);
 
     void  remove(Long id);
 }
